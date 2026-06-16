@@ -1,6 +1,6 @@
 import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { api } from "../lib/api";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -17,72 +17,100 @@ export default function CategoryPage() {
   });
 
   const category = (data as any)?.category;
-  const photos: Array<{ id: number; url: string; title: string | null }> = (data as any)?.photos ?? [];
+  const rawPhotos: Array<{ id: number; url: string; title: string | null }> = (data as any)?.photos ?? [];
+
+  const photos = useMemo(() => {
+    const arr = [...rawPhotos];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [rawPhotos.length, slug]);
 
   const openLightbox = (i: number) => setLightboxIndex(i);
   const closeLightbox = () => setLightboxIndex(null);
-  const prevPhoto = () => setLightboxIndex((i) => (i != null && i > 0 ? i - 1 : photos.length - 1));
-  const nextPhoto = () => setLightboxIndex((i) => (i != null ? (i + 1) % photos.length : 0));
+  const prevPhoto = useCallback(() =>
+    setLightboxIndex((i) => (i != null && i > 0 ? i - 1 : photos.length - 1)),
+    [photos.length]
+  );
+  const nextPhoto = useCallback(() =>
+    setLightboxIndex((i) => (i != null ? (i + 1) % photos.length : 0)),
+    [photos.length]
+  );
+
+  // Keyboard nav in lightbox
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prevPhoto();
+      else if (e.key === "ArrowRight") nextPhoto();
+      else if (e.key === "Escape") closeLightbox();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxIndex, prevPhoto, nextPhoto]);
+
+  // Lock body scroll when lightbox open
+  useEffect(() => {
+    if (lightboxIndex !== null) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [lightboxIndex]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-16 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#E5E5E5] border-t-[#0A0A0A] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#0A0A0A] pt-16 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#2A2A2A] border-t-[#C8A96E] rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!category) {
     return (
-      <div className="min-h-screen pt-16 flex items-center justify-center">
-        <p className="text-[#6B6B6B]">Category not found.</p>
+      <div className="min-h-screen bg-[#0A0A0A] pt-16 flex items-center justify-center">
+        <p className="text-[#5A5A5A]">Category not found.</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="pt-32 pb-16 px-6 lg:px-12 max-w-[1400px] mx-auto">
-        <p className="text-xs tracking-[0.2em] uppercase text-[#A0A0A0] font-medium mb-4">Photography</p>
-        <h1 className="font-display text-5xl md:text-7xl font-semibold text-[#0A0A0A]">
-          {category.name}
-        </h1>
-        <div className="w-12 h-px bg-[#C8A96E] mt-6" />
-      </div>
-
-      {/* Masonry-style photo grid */}
-      <div className="px-6 lg:px-12 max-w-[1400px] mx-auto pb-24">
+    <div className="min-h-screen bg-[#0A0A0A] overflow-x-hidden w-full">
+      {/* No header — straight into grid with top padding for navbar */}
+      <div className="pt-20 sm:pt-24 px-5 sm:px-8 lg:px-12 max-w-screen-2xl mx-auto pb-16 sm:pb-24">
         {photos.length === 0 ? (
-          <div className="py-24 text-center">
-            <p className="font-display text-2xl text-[#A0A0A0]">No photos yet in this category.</p>
+          <div className="py-16 text-center">
+            <p className="font-display text-xl text-[#5A5A5A]">No photos yet in this category.</p>
           </div>
         ) : (
-          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4">
             {photos.map((photo, i) => (
               <div
                 key={photo.id}
-                className="photo-card break-inside-avoid overflow-hidden cursor-pointer group relative"
+                className="photo-card break-inside-avoid overflow-hidden cursor-pointer group relative border border-[#2A2A2A] mb-4"
                 onClick={() => openLightbox(i)}
               >
                 <img
                   src={photo.url}
-                  alt={photo.title ?? ""}
+                  alt=""
                   className="w-full block"
                   loading="lazy"
                 />
-                {photo.title && (
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-end p-4">
-                    <p className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-display">
-                      {photo.title}
-                    </p>
-                  </div>
-                )}
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-[#2A2A2A] py-10 sm:py-12">
+        <div className="max-w-screen-2xl mx-auto px-5 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="font-display text-base text-[#F0F0F0]">photos by George</p>
+          <p className="text-xs text-[#5A5A5A] tracking-widest uppercase">
+            © {new Date().getFullYear()} All rights reserved
+          </p>
+        </div>
+      </footer>
 
       {/* Lightbox */}
       {lightboxIndex !== null && photos[lightboxIndex] && (
@@ -90,50 +118,51 @@ export default function CategoryPage() {
           className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center"
           onClick={closeLightbox}
         >
-          {/* Close */}
           <button
-            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-10"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/60 hover:text-white transition-colors z-10 p-2"
             onClick={closeLightbox}
+            aria-label="Close"
           >
-            <X size={28} />
+            <X size={24} />
           </button>
 
-          {/* Prev */}
           {photos.length > 1 && (
             <button
-              className="absolute left-4 md:left-8 text-white/50 hover:text-white transition-colors z-10 p-2"
+              className="absolute left-2 sm:left-6 md:left-8 text-white/40 hover:text-white transition-colors z-10 p-2"
               onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
+              aria-label="Previous"
             >
-              <ChevronLeft size={36} />
+              <ChevronLeft size={32} className="sm:w-9 sm:h-9" />
             </button>
           )}
 
-          {/* Image */}
-          <div className="max-w-5xl max-h-[90vh] px-16" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="w-full max-w-5xl max-h-[90svh] px-10 sm:px-16 flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
             <img
               src={photos[lightboxIndex].url}
               alt={photos[lightboxIndex].title ?? ""}
-              className="max-w-full max-h-[85vh] object-contain"
+              className="max-w-full max-h-[80svh] object-contain"
             />
             {photos[lightboxIndex].title && (
-              <p className="text-white/60 text-center text-sm font-display mt-4">
+              <p className="text-white/50 text-center text-xs sm:text-sm font-display mt-3 sm:mt-4">
                 {photos[lightboxIndex].title}
               </p>
             )}
           </div>
 
-          {/* Next */}
           {photos.length > 1 && (
             <button
-              className="absolute right-4 md:right-8 text-white/50 hover:text-white transition-colors z-10 p-2"
+              className="absolute right-2 sm:right-6 md:right-8 text-white/40 hover:text-white transition-colors z-10 p-2"
               onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
+              aria-label="Next"
             >
-              <ChevronRight size={36} />
+              <ChevronRight size={32} className="sm:w-9 sm:h-9" />
             </button>
           )}
 
-          {/* Counter */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40 text-xs tracking-widest">
+          <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 text-white/30 text-xs tracking-widest">
             {lightboxIndex + 1} / {photos.length}
           </div>
         </div>

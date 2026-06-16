@@ -3,11 +3,30 @@ import { db } from "../database";
 import * as schema from "../database/schema";
 import { eq, desc } from "drizzle-orm";
 import { requireAdmin } from "../middleware/auth";
-import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3, S3_BUCKET, getPublicUrl } from "../lib/s3";
 
 export const photosRouter = new Hono()
+  // Image proxy — serves S3 images same-origin to avoid CORS issues
+  .get("/image/*", async (c) => {
+    const key = decodeURIComponent(c.req.path.replace(/^\/api\/photos\/image\//, ""));
+    if (!key) return c.text("Not found", 404);
+    try {
+      const cmd = new GetObjectCommand({ Bucket: S3_BUCKET, Key: key });
+      const res = await s3.send(cmd);
+      const stream = res.Body as ReadableStream;
+      const contentType = res.ContentType ?? "image/jpeg";
+      return new Response(stream, {
+        headers: {
+          "Content-Type": contentType,
+          "Cache-Control": "public, max-age=31536000, immutable",
+        },
+      });
+    } catch {
+      return c.text("Not found", 404);
+    }
+  })
   // Get all favorites for hero slideshow
   .get("/favorites", async (c) => {
     const favs = await db
@@ -28,7 +47,7 @@ export const photosRouter = new Hono()
   // Presign upload URL
   .post("/presign", requireAdmin, async (c) => {
     const { filename, contentType } = await c.req.json();
-    const key = `photos/${Date.now()}-${filename.replace(/\s+/g, "-")}`;
+    const key = `photos/${Date.now()}-${filename.replace(/\s+/g, "-").replace(/%/g, "")}`;
     const url = await getSignedUrl(
       s3,
       new PutObjectCommand({

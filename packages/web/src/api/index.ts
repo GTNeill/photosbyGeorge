@@ -4,6 +4,7 @@ import { auth } from "./auth";
 import { authMiddleware } from "./middleware/auth";
 import { categoriesRouter } from "./routes/categories";
 import { photosRouter } from "./routes/photos";
+import { settingsRouter } from "./routes/settings";
 import { db } from "./database";
 import * as schema from "./database/schema";
 
@@ -15,7 +16,7 @@ const app = new Hono()
   .get("/health", (c) => c.json({ status: "ok" }, 200))
   .route("/categories", categoriesRouter)
   .route("/photos", photosRouter)
-  // Seed default categories if none exist
+  .route("/settings", settingsRouter)
   .post("/seed", async (c) => {
     const existing = await db.select().from(schema.categories);
     if (existing.length > 0) return c.json({ message: "Already seeded" }, 200);

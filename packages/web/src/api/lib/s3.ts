@@ -13,9 +13,7 @@ export const s3 = new S3Client({
 export const S3_BUCKET = process.env.S3_BUCKET!;
 export const S3_ENDPOINT = process.env.S3_ENDPOINT!;
 
-// Tigris requires subdomain-style URLs for public access
-// e.g. https://BUCKET.t3.storage.dev/key (not https://t3.storage.dev/BUCKET/key)
+// Proxy URL — served through our own API to avoid CORS issues
 export function getPublicUrl(key: string): string {
-  const endpointUrl = new URL(S3_ENDPOINT);
-  return `${endpointUrl.protocol}//${S3_BUCKET}.${endpointUrl.host}/${key}`;
+  return `/api/photos/image/${key.split("/").map(encodeURIComponent).join("/")}`;
 }

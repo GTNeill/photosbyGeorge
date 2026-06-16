@@ -2,12 +2,13 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #FFFFFF;
-  --surface: #F8F8F6;
-  --border: #E5E5E5;
-  --text-primary: #0A0A0A;
-  --text-secondary: #6B6B6B;
-  --text-muted: #A0A0A0;
+  --bg: #0A0A0A;
+  --surface: #141414;
+  --surface2: #1E1E1E;
+  --border: #2A2A2A;
+  --text-primary: #F0F0F0;
+  --text-secondary: #A0A0A0;
+  --text-muted: #5A5A5A;
   --accent: #C8A96E;
   --accent-dark: #A8893E;
   --font-display: 'DM Sans', system-ui, sans-serif;
@@ -65,7 +66,7 @@ body {
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--text-primary);
+  background: currentColor;
   transition: width 0.3s ease;
 }
 .nav-link:hover::after {

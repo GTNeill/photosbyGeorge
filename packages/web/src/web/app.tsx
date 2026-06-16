@@ -3,6 +3,8 @@ import { Navbar } from "./components/navbar";
 import { ProtectedRoute } from "./components/protected-route";
 import IndexPage from "./pages/index";
 import CategoryPage from "./pages/category";
+import ContactPage from "./pages/contact";
+import AvailabilityPage from "./pages/availability";
 import AdminPage from "./pages/admin";
 import AdminLoginPage from "./pages/admin-login";
 import { RunableBadge } from "@runablehq/website-runtime";
@@ -25,6 +27,8 @@ function App() {
       <Switch>
         <Route path="/" component={IndexPage} />
         <Route path="/category/:slug" component={CategoryPage} />
+        <Route path="/contact" component={ContactPage} />
+        <Route path="/availability" component={AvailabilityPage} />
         <Route path="/admin/login" component={AdminLoginPage} />
         <Route path="/admin">
           <ProtectedRoute>
@@ -32,8 +36,8 @@ function App() {
           </ProtectedRoute>
         </Route>
         <Route>
-          <div className="min-h-screen flex items-center justify-center">
-            <p className="font-display text-2xl text-[#A0A0A0] italic">Page not found.</p>
+          <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
+            <p className="font-display text-2xl text-[#5A5A5A] italic">Page not found.</p>
           </div>
         </Route>
       </Switch>

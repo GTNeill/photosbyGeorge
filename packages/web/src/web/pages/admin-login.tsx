@@ -22,17 +22,17 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-6">
+    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-5">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-12">
-          <h1 className="font-display text-3xl font-semibold text-[#0A0A0A]">photos by George</h1>
-          <p className="text-[#A0A0A0] text-xs tracking-[0.2em] uppercase mt-2">Admin Access</p>
+          <h1 className="font-display text-3xl font-semibold text-[#F0F0F0]">photos by George</h1>
+          <p className="text-[#5A5A5A] text-xs tracking-[0.2em] uppercase mt-2">Admin Access</p>
           <div className="w-8 h-px bg-[#C8A96E] mx-auto mt-4" />
         </div>
 
         {error && (
-          <div className="mb-6 px-4 py-3 bg-red-50 border border-red-100 rounded text-sm text-red-600">
+          <div className="mb-6 px-4 py-3 bg-red-950/50 border border-red-900/50 rounded text-sm text-red-400">
             {error}
           </div>
         )}
@@ -40,10 +40,10 @@ export default function AdminLoginPage() {
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 h-12 border border-[#E5E5E5] text-[#0A0A0A] text-sm font-medium hover:bg-[#F8F8F6] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-3 h-12 border border-[#2A2A2A] text-[#F0F0F0] text-sm font-medium hover:bg-[#141414] hover:border-[#3A3A3A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (
-            <div className="w-4 h-4 border-2 border-[#E5E5E5] border-t-[#0A0A0A] rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-[#2A2A2A] border-t-[#C8A96E] rounded-full animate-spin" />
           ) : (
             <svg viewBox="0 0 24 24" width="18" height="18">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
           {loading ? "Signing in…" : "Continue with Google"}
         </button>
 
-        <p className="text-center text-[#A0A0A0] text-xs mt-8">
+        <p className="text-center text-[#5A5A5A] text-xs mt-8">
           Admin access only. Unauthorized users will be denied.
         </p>
       </div>
