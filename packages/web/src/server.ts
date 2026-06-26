@@ -1,11 +1,20 @@
 import app from "./api";
 
+// Prevent Turso / network connection resets from killing the process
+process.on("uncaughtException", (err) => {
+  console.error("[uncaughtException] swallowed:", err?.message ?? err);
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("[unhandledRejection] swallowed:", reason);
+});
+
 const port = Number(process.env.PORT ?? 3000);
 const distDir = `${import.meta.dir}/../dist`;
 const indexPath = `${distDir}/index.html`;
 
 const server = Bun.serve({
   port,
+  idleTimeout: 255, // max allowed by Bun; drive-import can take minutes
   async fetch(request) {
     const url = new URL(request.url);
 

@@ -28,6 +28,7 @@ export const photos = sqliteTable("photos", {
   url: text("url").notNull(),
   title: text("title"),
   categoryId: integer("category_id").references(() => categories.id, { onDelete: "set null" }),
+  subcategoryId: integer("subcategory_id").references(() => subcategories.id, { onDelete: "set null" }),
   isFavorite: integer("is_favorite", { mode: "boolean" }).notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
   createdAt: integer("created_at", { mode: "timestamp" })

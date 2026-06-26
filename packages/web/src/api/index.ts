@@ -5,6 +5,8 @@ import { authMiddleware } from "./middleware/auth";
 import { categoriesRouter } from "./routes/categories";
 import { photosRouter } from "./routes/photos";
 import { settingsRouter } from "./routes/settings";
+import { ingestRouter } from "./routes/ingest";
+import { driveImportRouter } from "./routes/drive-import";
 import { db } from "./database";
 import * as schema from "./database/schema";
 
@@ -17,6 +19,8 @@ const app = new Hono()
   .route("/categories", categoriesRouter)
   .route("/photos", photosRouter)
   .route("/settings", settingsRouter)
+  .route("/integrations", ingestRouter)
+  .route("/drive-import", driveImportRouter)
   .post("/seed", async (c) => {
     const existing = await db.select().from(schema.categories);
     if (existing.length > 0) return c.json({ message: "Already seeded" }, 200);

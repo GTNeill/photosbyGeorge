@@ -62,10 +62,10 @@ export const photosRouter = new Hono()
   })
   // Save photo record after upload
   .post("/", requireAdmin, async (c) => {
-    const { key, url, title, categoryId } = await c.req.json();
+    const { key, url, title, categoryId, subcategoryId } = await c.req.json();
     const [photo] = await db
       .insert(schema.photos)
-      .values({ key, url, title: title ?? null, categoryId: categoryId ?? null, isFavorite: false, sortOrder: 0 })
+      .values({ key, url, title: title ?? null, categoryId: categoryId ?? null, subcategoryId: subcategoryId ?? null, isFavorite: false, sortOrder: 0 })
       .returning();
     return c.json({ photo }, 201);
   })
@@ -76,6 +76,7 @@ export const photosRouter = new Hono()
     const updates: Partial<typeof schema.photos.$inferInsert> = {};
     if (body.title !== undefined) updates.title = body.title;
     if (body.categoryId !== undefined) updates.categoryId = body.categoryId;
+    if (body.subcategoryId !== undefined) updates.subcategoryId = body.subcategoryId;
     if (body.isFavorite !== undefined) updates.isFavorite = body.isFavorite;
     if (body.sortOrder !== undefined) updates.sortOrder = body.sortOrder;
     const [photo] = await db.update(schema.photos).set(updates).where(eq(schema.photos.id, id)).returning();

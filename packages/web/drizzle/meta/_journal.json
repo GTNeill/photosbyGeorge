@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1782414454784,
+      "tag": "0000_clean_greymalkin",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1750460000000,
+      "tag": "0001_add_subcategory_to_photos",
+      "breakpoints": true
+    }
+  ]
+}

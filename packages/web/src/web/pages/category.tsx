@@ -60,7 +60,7 @@ export default function CategoryPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] pt-16 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center" style={{ paddingTop: "clamp(56px, 4vw, 64px)" }}>
         <div className="w-8 h-8 border-2 border-[#2A2A2A] border-t-[#C8A96E] rounded-full animate-spin" />
       </div>
     );
@@ -68,22 +68,21 @@ export default function CategoryPage() {
 
   if (!category) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] pt-16 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center" style={{ paddingTop: "clamp(56px, 4vw, 64px)" }}>
         <p className="text-[#5A5A5A]">Category not found.</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] overflow-x-hidden w-full">
-      {/* No header — straight into grid with top padding for navbar */}
-      <div className="pt-20 sm:pt-24 px-5 sm:px-8 lg:px-12 max-w-screen-2xl mx-auto pb-16 sm:pb-24">
+    <div className="min-h-screen bg-[#0A0A0A] overflow-x-hidden w-full" style={{ paddingTop: "clamp(56px, 4vw, 64px)" }}>
+      <div className="pt-6 sm:pt-8 px-5 sm:px-8 lg:px-12 2xl:px-20 max-w-[2560px] mx-auto pb-16 sm:pb-24">
         {photos.length === 0 ? (
           <div className="py-16 text-center">
             <p className="font-display text-xl text-[#5A5A5A]">No photos yet in this category.</p>
           </div>
         ) : (
-          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4">
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5 gap-4">
             {photos.map((photo, i) => (
               <div
                 key={photo.id}
@@ -104,7 +103,7 @@ export default function CategoryPage() {
 
       {/* Footer */}
       <footer className="border-t border-[#2A2A2A] py-10 sm:py-12">
-        <div className="max-w-screen-2xl mx-auto px-5 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-[2560px] mx-auto px-5 sm:px-8 lg:px-12 2xl:px-20 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-display text-base text-[#F0F0F0]">photos by George</p>
           <p className="text-xs text-[#5A5A5A] tracking-widest uppercase">
             © {new Date().getFullYear()} All rights reserved

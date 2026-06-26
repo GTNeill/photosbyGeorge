@@ -12,6 +12,9 @@ export function Navbar() {
   const [location] = useLocation();
   const isHome = location === "/";
 
+  // Derive category name for centered title
+  const categorySlug = location.startsWith("/category/") ? location.replace("/category/", "").split("/")[0] : null;
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -27,6 +30,7 @@ export function Navbar() {
   });
 
   const categories: { id: number; name: string; slug: string }[] = data?.categories ?? [];
+  const activeCategoryName = categorySlug ? (categories.find((c) => c.slug === categorySlug)?.name ?? null) : null;
 
   const bgClass = scrolled || !isHome || menuOpen
     ? "bg-[#0A0A0A] border-b border-[#2A2A2A]"
@@ -41,7 +45,7 @@ export function Navbar() {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${bgClass}`}>
-      <div className="max-w-screen-2xl mx-auto px-5 sm:px-8 lg:px-12 h-14 sm:h-16 flex items-center justify-between">
+      <div className="max-w-[2560px] mx-auto px-5 sm:px-8 lg:px-12 2xl:px-20 h-14 sm:h-16 flex items-center justify-between relative">
 
         {/* Site name */}
         <Link to="/" onClick={() => setMenuOpen(false)}>
@@ -49,6 +53,15 @@ export function Navbar() {
             photos by George
           </span>
         </Link>
+
+        {/* Centered category title — absolute so it doesn't affect layout */}
+        {activeCategoryName && (
+          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
+            <span className="font-display text-sm sm:text-base tracking-[0.2em] uppercase text-[#F0F0F0]">
+              {activeCategoryName}
+            </span>
+          </div>
+        )}
 
         {/* Desktop nav — all items in one flat row */}
         <div className="hidden md:flex items-center gap-8">

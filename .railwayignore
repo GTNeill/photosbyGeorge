@@ -1,0 +1,8 @@
+node_modules
+packages/web/node_modules
+packages/desktop/node_modules
+packages/mobile
+packages/web/dist
+.env
+*.log
+.DS_Store

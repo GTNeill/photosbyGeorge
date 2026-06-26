@@ -1,4 +1,31 @@
 import type { Plugin, ViteDevServer } from "vite";
+import { readFileSync } from "fs";
+import { resolve } from "path";
+
+// Load root .env into process.env so SSR modules (API routes) have access
+function loadRootEnv() {
+  const envPath = resolve(__dirname, "../../../../.env");
+  try {
+    const raw = readFileSync(envPath, "utf-8");
+    for (const line of raw.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const idx = trimmed.indexOf("=");
+      if (idx === -1) continue;
+      const key = trimmed.slice(0, idx).trim();
+      let val = trimmed.slice(idx + 1).trim();
+      // Strip surrounding quotes
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      if (!(key in process.env)) process.env[key] = val;
+    }
+  } catch {
+    // .env not present — no-op
+  }
+}
+
+loadRootEnv();
 
 export default function honoDevPlugin(): Plugin {
   return {

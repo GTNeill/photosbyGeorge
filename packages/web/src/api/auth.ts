@@ -26,6 +26,9 @@ export const auth = betterAuth({
   account: {
     storeStateStrategy: "cookie",
   },
+  emailAndPassword: {
+    enabled: true,
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
