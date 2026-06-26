@@ -20,7 +20,7 @@ type Subcategory = {
 
 export default function CategoryPage() {
   const { slug } = useParams<{ slug: string }>();
-  const [location, navigate] = useLocation();
+  const [location] = useLocation();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   // Parse ?sub= from query string
@@ -123,11 +123,9 @@ export default function CategoryPage() {
   }
 
   const setSubFilter = (subSlug: string | null) => {
-    if (subSlug) {
-      navigate(`/category/${slug}?sub=${subSlug}`);
-    } else {
-      navigate(`/category/${slug}`);
-    }
+    window.location.href = subSlug
+      ? `/category/${slug}?sub=${subSlug}`
+      : `/category/${slug}`;
   };
 
   return (
