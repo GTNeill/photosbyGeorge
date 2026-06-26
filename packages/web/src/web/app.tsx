@@ -9,6 +9,7 @@ import AdminPage from "./pages/admin";
 import AdminLoginPage from "./pages/admin-login";
 import { RunableBadge } from "@runablehq/website-runtime";
 import { useLocation } from "wouter";
+import { useEffect } from "react";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -21,7 +22,14 @@ function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+const AFFILIATE_URL = "https://runable.com/?via=george-neill";
+
 function App() {
+  useEffect(() => {
+    const badge = document.querySelector("a[data-runable-badge]") as HTMLAnchorElement | null;
+    if (badge) badge.href = AFFILIATE_URL;
+  }, []);
+
   return (
     <Layout>
       <Switch>
