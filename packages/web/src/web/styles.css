@@ -13,12 +13,12 @@
   --accent-dark: #A8893E;
   --font-display: 'DM Sans', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
-  --nav-height: 3.5rem;   /* mobile */
+  --nav-height: 64px;   /* mobile */
 }
 
 @media (min-width: 640px) {
   :root {
-    --nav-height: 4rem;  /* desktop */
+    --nav-height: 72px;  /* desktop */
   }
 }
 

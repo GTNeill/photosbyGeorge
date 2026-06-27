@@ -133,9 +133,9 @@ export default function CategoryPage() {
       className="min-h-screen bg-[#0A0A0A] overflow-x-hidden w-full"
       style={{ paddingTop: "var(--nav-height)" }}
     >
-      {/* Subcategory filter pills — own row with side padding and breathing room */}
+      {/* Subcategory filter pills */}
       {subcategories.length > 0 && (
-        <div className="px-6 sm:px-10 lg:px-14 2xl:px-20 max-w-[2560px] mx-auto pt-6 pb-4 sm:pt-7 sm:pb-5">
+        <div style={{ paddingLeft: "clamp(1.5rem, 4vw, 5rem)", paddingRight: "clamp(1.5rem, 4vw, 5rem)", paddingTop: "1.5rem", paddingBottom: "1rem" }}>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setSubFilter(null)}
@@ -164,7 +164,7 @@ export default function CategoryPage() {
         </div>
       )}
 
-      <div className="pt-4 sm:pt-5 px-6 sm:px-10 lg:px-14 2xl:px-20 max-w-[2560px] mx-auto pb-16 sm:pb-24">
+      <div style={{ paddingLeft: "clamp(1.5rem, 4vw, 5rem)", paddingRight: "clamp(1.5rem, 4vw, 5rem)", paddingTop: "1rem", paddingBottom: "6rem" }}>
 
         {photos.length === 0 ? (
           <div className="py-16 text-center">
@@ -191,7 +191,7 @@ export default function CategoryPage() {
 
       {/* Footer */}
       <footer className="border-t border-[#2A2A2A] py-10 sm:py-12">
-        <div className="max-w-[2560px] mx-auto px-5 sm:px-8 lg:px-12 2xl:px-20 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-[2560px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4" style={{ paddingLeft: "clamp(1.5rem, 4vw, 5rem)", paddingRight: "clamp(1.5rem, 4vw, 5rem)" }}>
           <p className="font-display text-base text-[#F0F0F0]">photos by George</p>
           <p className="text-xs text-[#5A5A5A] tracking-widest uppercase">
             © {new Date().getFullYear()} All rights reserved
