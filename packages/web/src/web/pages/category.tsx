@@ -133,11 +133,10 @@ export default function CategoryPage() {
       className="min-h-screen bg-[#0A0A0A] overflow-x-hidden w-full"
       style={{ paddingTop: "var(--nav-height)" }}
     >
-      <div className="pt-6 sm:pt-8 px-5 sm:px-8 lg:px-12 2xl:px-20 max-w-[2560px] mx-auto pb-16 sm:pb-24">
-
-        {/* Subcategory filter pills — only shown if subcategories exist */}
-        {subcategories.length > 0 && (
-          <div className="flex flex-wrap gap-3 pt-5 pb-6 sm:pt-6 sm:pb-8">
+      {/* Subcategory filter pills — own row with side padding and breathing room */}
+      {subcategories.length > 0 && (
+        <div className="px-6 sm:px-10 lg:px-14 2xl:px-20 max-w-[2560px] mx-auto pt-6 pb-4 sm:pt-7 sm:pb-5">
+          <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setSubFilter(null)}
               className={`px-5 py-2 text-[0.75rem] font-medium tracking-[0.15em] uppercase border transition-colors duration-150 rounded-sm ${
@@ -162,7 +161,10 @@ export default function CategoryPage() {
               </button>
             ))}
           </div>
-        )}
+        </div>
+      )}
+
+      <div className="pt-4 sm:pt-5 px-6 sm:px-10 lg:px-14 2xl:px-20 max-w-[2560px] mx-auto pb-16 sm:pb-24">
 
         {photos.length === 0 ? (
           <div className="py-16 text-center">
