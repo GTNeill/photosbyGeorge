@@ -15,7 +15,7 @@ export default function AvailabilityPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A]" style={{ paddingTop: "clamp(56px, 4vw, 64px)" }}>
+    <div className="min-h-screen bg-[#0A0A0A]" style={{ paddingTop: "clamp(64px, 5vw, 80px)" }}>
       {/* Header */}
       <div className="pt-8 sm:pt-12 pb-10 sm:pb-14 px-5 sm:px-8 lg:px-12 2xl:px-20 max-w-[2560px] mx-auto">
         <p className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-[#5A5A5A] font-medium mb-3">Book a session</p>

@@ -104,7 +104,7 @@ export default function CategoryPage() {
     return (
       <div
         className="min-h-screen bg-[#0A0A0A] flex items-center justify-center"
-        style={{ paddingTop: "clamp(56px, 4vw, 64px)" }}
+        style={{ paddingTop: "clamp(64px, 5vw, 80px)" }}
       >
         <div className="w-8 h-8 border-2 border-[#2A2A2A] border-t-[#C8A96E] rounded-full animate-spin" />
       </div>
@@ -115,7 +115,7 @@ export default function CategoryPage() {
     return (
       <div
         className="min-h-screen bg-[#0A0A0A] flex items-center justify-center"
-        style={{ paddingTop: "clamp(56px, 4vw, 64px)" }}
+        style={{ paddingTop: "clamp(64px, 5vw, 80px)" }}
       >
         <p className="text-[#5A5A5A]">Category not found.</p>
       </div>
@@ -131,7 +131,7 @@ export default function CategoryPage() {
   return (
     <div
       className="min-h-screen bg-[#0A0A0A] overflow-x-hidden w-full"
-      style={{ paddingTop: "clamp(56px, 4vw, 64px)" }}
+      style={{ paddingTop: "clamp(64px, 5vw, 80px)" }}
     >
       <div className="pt-6 sm:pt-8 px-5 sm:px-8 lg:px-12 2xl:px-20 max-w-[2560px] mx-auto pb-16 sm:pb-24">
 
